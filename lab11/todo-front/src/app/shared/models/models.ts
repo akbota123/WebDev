@@ -10,3 +10,9 @@ export interface ITask {
     due_on: string;
     status: string;
 }
+
+export interface ITaskDetail {
+    id: number;
+    name: string;
+    status: string;
+}
