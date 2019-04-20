@@ -16,18 +16,18 @@ export class ProviderService extends MainService {
    public sendMessage = new EventEmitter<string>();
 
   getTaskLists(): Promise<ITaskList[]> {
-    return this.get('http://localhost:8000/api/task_list/', {});
+    return this.get('http://localhost:8000/task_list/', {});
   }
 
   getTaskListDetail(id: number): Promise<ITaskList> {
-    return this.get(`http://localhost:8000/api/task_list/${id}/`, {});
+    return this.get(`http://localhost:8000/task_list/${id}/`, {});
   }
 
   getTaskListTasks(id: number): Promise<ITaskDetail[]> {
-    return this.get(`http://localhost:8000/api/task_list/${id}/task/`, {});
+    return this.get(`http://localhost:8000/task_list/${id}/task/`, {});
   }
 
   getTaskDetail(id: number): Promise<ITask> {
-    return this.get(`http://localhost:8000/api/task/${id}/`, {});
+    return this.get(`http://localhost:8000/task/${id}/`, {});
   }
 }
