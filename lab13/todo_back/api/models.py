@@ -49,13 +49,17 @@ class Task(models.Model):
             'status': self.status
         }
 
-    def to_json_detai(self):
+    def to_json_detail(self):
         return {
             'id': self.id,
             'name': self.name,
-            'created_at': self.created_at,
-            'due_on': self.due_on,
-            'status': self.status
+            'created_at': self.created_at.__str__(),
+            'due_on': self.due_on.__str__(),
+            'status': self.status,
+            'task': self.task.to_json(),
         }
+
+    def check_owner(self, request):
+        return self.owner.id == request.user.id
 
 

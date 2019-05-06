@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -10,7 +9,7 @@ from api.serializers import TaskListSerializer, TaskSerializer
 @api_view(['GET', 'POST'])
 def task_lists(request):
     if request.method == 'GET':
-        lists = TaskList.objects.for_user(request.user)
+        lists = TaskList.objects.all()
         serializer = TaskListSerializer(lists, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -21,17 +20,17 @@ def task_lists(request):
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def task_list_detail(request, pk):
     try:
-        task_list = TaskList.objects.for_user(request.user).get(id=pk)
+        task_list = TaskList.objects.get(id=pk)
     except TaskList.DoesNotExist as e:
         return Response({'error': f'{e}'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = TaskListSerializer(task_list)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+    elif request.method == 'PUT' or 'PATCH':
         serializer = TaskListSerializer(instance=task_list, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -45,12 +44,12 @@ def task_list_detail(request, pk):
 @api_view(['GET', 'POST'])
 def task_list_tasks(request, pk):
     try:
-        task_list = TaskList.objects.for_user(request.user).get(id=pk)
+        task_list = TaskList.objects.get(id=pk)
     except TaskList.DoesNotExist as e:
         return Response({'error': f'{e}'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        tasks = task_list.tasks.all()
+        tasks = Task.objects.filter(task=task_list)
         serializer = TaskListSerializer(tasks, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -61,17 +60,17 @@ def task_list_tasks(request, pk):
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def task_detail(request, pk):
     try:
-        task = Task.objects.for_user(request.user).get(id=pk)
+        task = Task.objects.get(id=pk)
     except TaskList.DoesNotExist as e:
         return Response({'error': f'{e}'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = TaskSerializer(task)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+    elif request.method == 'PUT' or 'PATCH':
         serializer = TaskSerializer(instance=task, data=request.data)
         if serializer.is_valid():
             serializer.save()

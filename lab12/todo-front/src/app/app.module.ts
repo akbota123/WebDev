@@ -10,6 +10,7 @@ import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProviderService } from './shared/services/provider.service';
 import { FormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { FormsModule} from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ProviderService
